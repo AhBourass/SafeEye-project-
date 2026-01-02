@@ -1,0 +1,78 @@
+version: '3.8'
+
+services:
+  # PostgreSQL Database
+  postgres:
+    image: postgres:15-alpine
+    container_name: cyber_postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-SafeEye}
+      POSTGRES_USER: ${POSTGRES_USER:-admin}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-securepass123}
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./database/init.sql:/docker-entrypoint-initdb.d/01-init.sql
+      - ./database/seed_data.sql:/docker-entrypoint-initdb.d/02-seed.sql
+    networks:
+      - cyber_network
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-admin} -d ${POSTGRES_DB:-SafeEye}" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Backend API
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: cyber_backend
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    environment:
+      DATABASE_URL: postgresql://${POSTGRES_USER:-admin}:${POSTGRES_PASSWORD:-securepass123}@postgres:5432/${POSTGRES_DB:-SafeEye}
+      API_SECRET_KEY: ${API_SECRET_KEY:-dev-secret-key-change-in-production}
+      ENVIRONMENT: ${ENVIRONMENT:-development}
+    depends_on:
+      postgres:
+        condition: service_healthy
+    volumes:
+      - ./backend:/app
+      - ./certs:/app/certs
+    networks:
+      - cyber_network
+    command: uvicorn src.app:app --host 0.0.0.0 --port 8000 --reload
+
+  # Web Dashboard (served by backend for now)
+  # In production, this would be separate (Nginx)
+
+  # Agent (for testing in Docker - normally runs on user's machine)
+  agent:
+    build:
+      context: ./agent
+      dockerfile: Dockerfile
+    container_name: cyber_agent
+    restart: "no" # Manual execution
+    environment:
+      BACKEND_URL: http://backend:8000
+      AGENT_API_KEY: ${AGENT_API_KEY:-dev-agent-key}
+    depends_on:
+      - backend
+    networks:
+      - cyber_network
+    cap_add:
+      - NET_ADMIN
+    # Note: In production, agent runs on user's host machine, not in container
+    # This is just for testing during development
+
+volumes:
+  postgres_data:
+    driver: local
+
+networks:
+  cyber_network:
+    driver: bridge

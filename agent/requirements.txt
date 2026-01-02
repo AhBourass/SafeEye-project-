@@ -1,0 +1,80 @@
+# Agent Requirements - Cybersécurité Accessible
+# Python 3.10+
+# Sprint 2-3 Dependencies
+
+# ============================================
+# Network Scanning (Core Functionality)
+# ============================================
+scapy==2.5.0                  # Packet manipulation and network scanning
+python-nmap==0.7.1            # Nmap wrapper (optional alternative)
+
+# ============================================
+# HTTP Client (API Communication)
+# ============================================
+requests==2.31.0              # HTTP requests to backend
+urllib3==2.1.0                # HTTP client (used by requests)
+
+# ============================================
+# OUI Database (Manufacturer Lookup)
+# ============================================
+manuf==1.1.5                  # MAC address manufacturer lookup
+# Alternative: mac-vendor-lookup==0.1.12
+
+# ============================================
+# Network Utilities
+# ============================================
+netifaces==0.11.0             # Network interface detection
+ipaddress==1.0.23             # IP address manipulation (built-in Python 3.3+)
+
+# ============================================
+# Data Handling
+# ============================================
+python-dateutil==2.8.2        # Date parsing
+
+# ============================================
+# Configuration
+# ============================================
+python-dotenv==1.0.0          # Environment variables
+pyyaml==6.0.1                 # YAML config files
+
+# ============================================
+# Logging
+# ============================================
+colorlog==6.8.0               # Colored console output
+python-json-logger==2.0.7     # Structured logging
+
+# ============================================
+# Testing (Dev only)
+# ============================================
+pytest==7.4.4                 # Testing framework
+pytest-mock==3.12.0           # Mocking for tests
+pytest-cov==4.1.0             # Coverage
+
+# ============================================
+# TLS/SSL (for HTTPS)
+# ============================================
+certifi==2023.11.17           # CA certificates
+urllib3[secure]==2.1.0        # Secure HTTPS
+
+# ============================================
+# Notes:
+# ============================================
+# IMPORTANT: Scapy requires root/administrator privileges
+#            to perform network scanning operations
+#
+# Platform-specific notes:
+# - Linux: Works out of box, may need sudo
+# - macOS: May need to install libpcap
+# - Windows: May need WinPcap or Npcap
+#
+# OUI Database:
+# - manuf package includes IEEE OUI database
+# - Updates automatically on first run
+# - Local cache for offline operation
+#
+# To install:
+#   pip install -r requirements.txt --break-system-packages
+#
+# To run agent:
+#   sudo python src/scanner.py  (Linux/Mac)
+#   python src/scanner.py       (Windows as Administrator)

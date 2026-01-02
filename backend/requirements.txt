@@ -1,0 +1,83 @@
+# Backend API Requirements - Cybersécurité Accessible
+# Python 3.10+
+# Sprint 1-10 Dependencies
+
+# ============================================
+# Web Framework & ASGI Server
+# ============================================
+fastapi==0.109.0              # Modern async web framework
+uvicorn[standard]==0.27.0     # ASGI server with auto-reload
+pydantic==2.5.3               # Data validation
+pydantic-settings==2.1.0      # Settings management
+
+# ============================================
+# Database & ORM
+# ============================================
+sqlalchemy==2.0.25            # SQL toolkit and ORM
+psycopg2-binary==2.9.9        # PostgreSQL adapter
+alembic==1.13.1               # Database migrations
+
+# ============================================
+# Security & Authentication
+# ============================================
+python-jose[cryptography]==3.3.0  # JWT tokens
+passlib[bcrypt]==1.7.4        # Password hashing
+python-multipart==0.0.6       # Form data parsing
+
+# ============================================
+# HTTP Client (for internal requests)
+# ============================================
+httpx==0.26.0                 # Async HTTP client
+requests==2.31.0              # Sync HTTP client (fallback)
+
+# ============================================
+# Data Validation & Parsing
+# ============================================
+python-dateutil==2.8.2        # Date parsing
+validators==0.22.0            # URL/email validation
+
+# ============================================
+# Environment & Configuration
+# ============================================
+python-dotenv==1.0.0          # Load .env files
+
+# ============================================
+# Testing (Dev/Test only)
+# ============================================
+pytest==7.4.4                 # Testing framework
+pytest-asyncio==0.23.3        # Async test support
+pytest-cov==4.1.0             # Coverage reporting
+httpx==0.26.0                 # Test client
+
+# ============================================
+# Code Quality (Dev only)
+# ============================================
+black==23.12.1                # Code formatter
+flake8==7.0.0                 # Linting
+isort==5.13.2                 # Import sorting
+mypy==1.8.0                   # Type checking
+
+# ============================================
+# Monitoring & Logging
+# ============================================
+python-json-logger==2.0.7     # Structured logging
+
+# ============================================
+# CORS & Middleware
+# ============================================
+# (Included in FastAPI, no additional package needed)
+
+# ============================================
+# Notes:
+# ============================================
+# - All packages are free and open-source
+# - Versions pinned for reproducibility
+# - Total installation size: ~150MB
+# - Installation time: ~2-3 minutes
+#
+# To install:
+#   pip install -r requirements.txt --break-system-packages
+#
+# To update:
+#   pip list --outdated
+#   pip install --upgrade <package>
